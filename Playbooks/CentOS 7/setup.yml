@@ -1,0 +1,10 @@
+---
+- name: Default Setup for CentOS 7
+  hosts: lxc
+  gather_facts: true
+  user: jhooks
+  become: true
+  become_method: sudo
+
+  roles:
+    - common

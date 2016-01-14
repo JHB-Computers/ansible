@@ -1,0 +1,27 @@
+---
+- hosts: yumlocal:yumremote
+  gather_facts: yes
+  remote_user: jhooks
+  tasks:
+   - name: Update
+     yum: name=*
+          state=latest
+     become: yes
+     become_method: sudo 
+
+- hosts: dnflocal
+  gather_facts: yes
+  remote_user: jhooks
+  tasks:
+   - name: Update
+     dnf: name=* state=latest
+     sudo: yes
+
+- hosts: aptlocal:aptremote
+  gather_facts: yes
+  remote_user: jhooks
+  tasks:
+   - name: Update
+     apt: update_cache=yes upgrade=dist 
+     sudo: yes 
+

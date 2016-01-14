@@ -1,0 +1,36 @@
+---
+- name: Create container
+  lxc_container:
+    name: "{{ container }}" 
+    template: ubuntu
+    state: started
+    template_options: --release wily --arch amd64
+    container_command: |
+      useradd jhooks -s /bin/bash -m -U
+      echo -e "tempass\ntempass" | passwd jhooks
+      mkdir /home/jhooks/.ssh 
+
+- name: Copy SSH key
+  copy: src=key dest=/var/lib/lxc/{{ container }}/rootfs/home/jhooks/.ssh/authorized_keys mode=0600
+
+- name: Add static IP
+  template: src=ip.j2 dest=/var/lib/lxc/{{ container }}/rootfs/etc/network/interfaces mode=0644
+
+- name: Change Permissions
+  lxc_container:
+    name: "{{ container }}" 
+    state: started
+    container_command: |
+      chown -R jhooks:jhooks /home/jhooks
+      chown root:root /etc/network/interfaces
+
+- name: Pause for 15 seconds
+  pause: seconds=15
+
+- name: Install wget and update
+  lxc_container:
+    name: "{{ container }}"
+    container_command: |
+      apt-get update
+      apt-get upgrade -y
+      apt-get install wget -y

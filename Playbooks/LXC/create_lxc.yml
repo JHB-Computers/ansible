@@ -1,0 +1,9 @@
+---
+- name: Create LXC Container
+  hosts: megatron
+  user: jhooks
+  become: true
+  become_method: sudo
+
+  roles:
+    - common

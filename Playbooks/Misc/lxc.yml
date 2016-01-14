@@ -1,0 +1,21 @@
+- hosts: 10.0.0.4
+  gather_facts: yes
+  remote_user: jhooks
+  sudo: yes
+  tasks:
+   - name: Create filesystem container
+     lxc_container:
+       name: vdi-base  
+       state: stopped
+       clone_name: jhooks
+
+   - name: Change user in container
+     lxc_container:
+       name: jhooks
+       state: started
+       container_command: |
+         userdel ubuntu 
+         rm -rf /home/ubuntu
+         useradd jhooks
+         passwd jhooks testpass
+         chage -d 0 jhooks

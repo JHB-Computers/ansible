@@ -1,0 +1,59 @@
+---
+- name: Update
+  apt: update_cache=yes
+
+- name: Upgrade
+  apt: upgrade=dist
+
+- name: Install n 
+  get_url: url=https://raw.githubusercontent.com/visionmedia/n/master/bin/n dest=/usr/local/bin/n
+
+- name: Make n executable
+  file: path=/usr/local/bin/n mode=0755
+
+- name: Install node 4.1.1 
+  command: n 4.1.1 
+
+- name: Install redis 
+  apt: name={{ item }} state=present
+  with_items:
+    - build-essential
+    - redis-server
+    - libpng-dev
+    - git
+    - python-minimal
+    - nodejs 
+
+- name: Update npm
+  command: sudo npm install npm -g
+
+- name: Get xo-server
+  git: repo=http://github.com/vatesfr/xo-server
+       dest=/home/{{ user }}/xo-server
+       version=stable
+
+- name: Copy config
+  copy: src=xo-server.yaml dest=/home/{{ user }}/xo-server/.xo-server.yaml
+
+- name: Get xo-web
+  git: repo=http://github.com/vatesfr/xo-web
+       dest=/home/{{ user }}/xo-web
+       version=stable
+
+- name: Install xo-server
+  shell: npm install && npm run build
+  args:
+    chdir: /home/{{ user }}/xo-server
+
+- name: Install xo-web
+  shell: npm install && npm run build
+  args:
+    chdir: /home/{{ user }}/xo-web
+
+- name: Install forever
+  npm: name=forever global=yes
+
+- name: Start xo-server
+  shell: forever start bin/xo-server
+  args:
+    chdir: /home/{{ user }}/xo-server

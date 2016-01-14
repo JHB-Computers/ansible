@@ -1,0 +1,10 @@
+---
+- name: Setup for Xen Orchestra 
+  hosts: test
+  gather_facts: true
+  user: "{{ user }}" 
+  become: true
+  become_method: sudo
+
+  roles:
+    - common

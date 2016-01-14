@@ -1,0 +1,26 @@
+---
+- name: Update
+  yum: name=*
+       state=latest  
+
+- name: Copy SSH key
+  copy: src=key dest=/home/jhooks/.ssh/authorized_keys owner=jhooks group=jhooks mode=0600
+
+- name: Install epel-release
+  yum: name=epel-release
+       state=latest
+
+- name: Install packages
+  yum: name={{ item }}
+       state=latest
+  with_items:
+    -  sysstat
+    -  fail2ban
+    -  nmap
+    -  wget
+    -  tmux
+
+- name: Allow only SSH keys
+  copy: src=sshd_config dest=/etc/ssh/sshd_config owner=root group=root mode=0644
+
+
