@@ -1,16 +1,27 @@
 [yumlocal]
-10.0.0.2
 10.0.0.5
+10.0.0.2
 
 [dnflocal]
 10.0.0.19
 
 [aptlocal]
 10.0.0.4
-10.0.0.197
 10.0.0.9
 10.0.0.10
+10.0.0.188
 
 [aptremote]
 45.63.1.9
 
+[yumremote]
+stjohnsref.com
+
+[megatron]
+10.0.0.4
+
+[lxc]
+10.0.0.13
+
+[test]
+10.0.0.162
