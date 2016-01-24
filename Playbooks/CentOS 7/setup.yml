@@ -1,6 +1,6 @@
 ---
 - name: Default Setup for CentOS 7
-  hosts: lxc
+  hosts: template 
   gather_facts: true
   user: jhooks
   become: true

@@ -1,7 +1,7 @@
 ---
 - name: Update
   yum: name=*
-       state=latest  
+       state=latest
 
 - name: Copy SSH key
   copy: src=key dest=/home/jhooks/.ssh/authorized_keys owner=jhooks group=jhooks mode=0600
@@ -23,4 +23,5 @@
 - name: Allow only SSH keys
   copy: src=sshd_config dest=/etc/ssh/sshd_config owner=root group=root mode=0644
 
-
+- name: Restart SSH
+  service: name=sshd state=restarted
