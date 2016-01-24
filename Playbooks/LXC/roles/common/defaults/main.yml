@@ -1,6 +1,6 @@
 ---
-container: test
-ipaddr: 10.0.0.40 
+container: test2 
+ipaddr: 10.0.0.41 
 system_packages:
   - openssh 
   - wget
