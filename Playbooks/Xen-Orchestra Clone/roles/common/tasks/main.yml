@@ -1,0 +1,34 @@
+---
+- name: Update
+  apt: update_cache=yes
+
+- name: Upgrade
+  apt: upgrade=dist
+
+- name: Pull Changes for server
+  shell: git pull && npm i
+  args:
+    chdir: /home/{{ user }}/xo-server
+
+- name: Update XO Server
+  shell: npm run build
+  args:
+    chdir: /home/{{ user }}/xo-server
+
+- name: Pull changes for web
+  shell: git pull && npm i
+  args:
+    chdir: /home/{{ user }}/xo-web
+
+- name: Update xo-web
+  shell: npm run build
+  args:
+    chdir: /home/{{ user }}/xo-web
+
+- name: Restart container
+  state: restarted
+
+- name: Start xo-server
+  shell: forever start bin/xo-server
+  args:
+    chdir: /home/{{ user }}/xo-server
