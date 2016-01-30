@@ -1,0 +1,5 @@
+---
+- name: Restart Container
+  lxc_container:
+    name: xo2
+    state: restarted

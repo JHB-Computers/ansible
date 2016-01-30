@@ -1,5 +1,15 @@
 ---
-- name: Setup for Xen Orchestra
+- name: Set up XO Container
+  hosts: lxc
+  gather_facts: true
+  user: "{{ user }}"
+  become: true
+  become_method: sudo
+
+  roles:
+    - lxc
+
+- name: Set Up XO
   hosts: xo
   gather_facts: true
   user: "{{ user }}"
@@ -7,4 +17,4 @@
   become_method: sudo
 
   roles:
-    - common
+    - xo

@@ -1,0 +1,39 @@
+---
+- name: Change XO hostname
+  lxc_container:
+    name: xolive
+    container_command: |
+      sed -i -- 's/xolive/xoold/g' /etc/hostname
+
+- name: Stop XO
+  lxc_container:
+    name: xolive
+    state: stopped
+
+- name: Rename XO
+  shell: mv /var/lib/lxc/xolive /var/lib/lxc/xoold
+
+- name: Replace XO name
+  shell: sed -i -- 's/xolive/xoold/g' /var/lib/lxc/xoold/config
+
+- name: Clone old XO
+  lxc_container:
+    name: xoold
+    clone_name: xolive
+
+- name: Stop old XO
+  lxc_container:
+    name: xoold
+    state: stopped
+
+- name: Start Container
+  lxc_container:
+    name: xolive
+    state: started
+
+- name: Update container
+  lxc_container:
+    name: xolive
+    container_command: |
+      apt-get update
+      apt-get upgrade

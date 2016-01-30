@@ -1,10 +1,4 @@
 ---
-- name: Update
-  apt: update_cache=yes
-
-- name: Upgrade
-  apt: upgrade=dist
-
 - name: Pull Changes for server
   shell: git pull && npm i
   args:
@@ -24,9 +18,8 @@
   shell: npm run build
   args:
     chdir: /home/{{ user }}/xo-web
-
-- name: Restart container
-  state: restarted
+  notify:
+  - Restart Container
 
 - name: Start xo-server
   shell: forever start bin/xo-server
